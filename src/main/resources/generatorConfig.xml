@@ -22,8 +22,8 @@
                         password="${db.password}">
         </jdbcConnection>
 
-            <!--数值形的字段，如果指定精度，比如Number(12,2)，默认生成entity属性是BigDecimal型-->
-            <!--如果不指定精度，比如:Number(9)，指默认生成的是Long型-->
+        <!--数值形的字段，如果指定精度，比如Number(12,2)，默认生成entity属性是BigDecimal型-->
+        <!--如果不指定精度，比如:Number(9)，指默认生成的是Long型-->
         <javaTypeResolver>
             <!--数据库类型和Java类型之间的转换控制-->
             <property name="forceBigDecimals" value="false"/>
