@@ -2,9 +2,10 @@
 
 <configuration scan="true" scanPeriod="60 seconds" debug="false">
 
+    <property name="logbase" value="${catalina.base}/logs/developer/mmall" />
+
     <!-- 控制台打印 -->
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
-        <encoding>UTF-8</encoding>
         <encoder>
             <pattern>[%d{HH:mm:ss.SSS}][%p][%c{40}][%t] %m%n</pattern>
         </encoder>
@@ -15,9 +16,9 @@
 
     <!-- 项目日志 -->
     <appender name="mmall" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <File>${tomcat}/logs/mmall.log</File>
+        <File>${logbase}/mmall.log</File>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${tomcat}/logs/mmall.log.%d{yyyy-MM-dd}.gz</fileNamePattern>
+            <fileNamePattern>${logbase}/mmall.log.%d{yyyy-MM-dd}.gz</fileNamePattern>
             <append>true</append>
             <!-- 最大存储历史日志10天 -->
             <maxHistory>10</maxHistory>
@@ -29,9 +30,9 @@
 
     <!-- 错误日志 -->
     <appender name="error" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <File>${tomcat}/logs/error.log</File>
+        <File>${logbase}/error.log</File>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${tomcat}/logs/error.log.%d{yyyy-MM-dd}.gz</fileNamePattern>
+            <fileNamePattern>${logbase}/error.log.%d{yyyy-MM-dd}.gz</fileNamePattern>
             <append>true</append>
             <maxHistory>10</maxHistory>
         </rollingPolicy>

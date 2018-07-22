@@ -10,8 +10,16 @@
 
     <!--配置插件-->
     <plugins>
-        <plugin interceptor="com.github.pagehelper.PageHelper">
-            <property name="dialect" value="mysql"/>
+
+        <!-- 4.0.0 之后用PageInterceptor ，不再使用 PageHelper； -->
+        <plugin interceptor="com.github.pagehelper.PageInterceptor">
+
+        <!-- 4.0.0 之后就不需要手动设置数据库类型了，会自动检测
+            如果设置了会抛 ClassNotFound 异常
+        -->
+            <!--<property name="dialect" value="Mysql"/>-->
+
+
             <!-- 设置为true时，会将rowbound第一个参数当成
                 pageNum页码使用-->
             <property name="offsetAsPageNum" value="true"/>
