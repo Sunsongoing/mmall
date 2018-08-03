@@ -88,7 +88,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public ServerResponse<String> checkValid(String str, String type) {
-        if (StringUtils.isNoneBlank(type)) {
+        if (StringUtils.isNoneBlank(str,type)) {
             //开始校验
             int resultCount;
             //按类型校验
