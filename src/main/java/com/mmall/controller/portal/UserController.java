@@ -5,6 +5,7 @@ import com.mmall.common.ResponseCode;
 import com.mmall.common.ServerResponse;
 import com.mmall.pojo.User;
 import com.mmall.service.UserService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,12 +27,14 @@ public class UserController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<User> login(String username, String password, HttpSession session) {
-
-        ServerResponse<User> response = userService.login(username, password);
-        if (response.isSuccess()) {
-            session.setAttribute(Const.CURRENT_USER, response.getData());
+        if (StringUtils.isNoneBlank(username, password)) {
+            ServerResponse<User> response = userService.login(username, password);
+            if (response.isSuccess()) {
+                session.setAttribute(Const.CURRENT_USER, response.getData());
+            }
+            return response;
         }
-        return response;
+        return ServerResponse.createByErrorMessage("参数错误");
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.POST)
@@ -44,7 +47,10 @@ public class UserController {
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> register(User user) {
-        return userService.register(user);
+        if (StringUtils.isNoneBlank(user.getUsername(), user.getPassword(), user.getEmail())) {
+            return userService.register(user);
+        }
+        return ServerResponse.createByErrorMessage("参数错误");
     }
 
     /**
@@ -69,14 +75,19 @@ public class UserController {
     @RequestMapping(value = "/forget_get_question", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> forgetGetQuestion(String username) {
-        return userService.selectQuestion(username);
+        if (StringUtils.isNotBlank(username)) {
+            return userService.selectQuestion(username);
+        }
+        return ServerResponse.createByErrorMessage("参数错误");
     }
 
     @RequestMapping(value = "/forget_check_answer")
     @ResponseBody
     public ServerResponse<String> forgetCheckAnswer(String username, String question, String answer) {
-
-        return userService.checkAnswer(username, question, answer);
+        if (StringUtils.isNoneBlank(username, question, answer)) {
+            return userService.checkAnswer(username, question, answer);
+        }
+        return ServerResponse.createByErrorMessage("参数错误");
     }
 
     @RequestMapping(value = "/forget_reset_password", method = RequestMethod.POST)

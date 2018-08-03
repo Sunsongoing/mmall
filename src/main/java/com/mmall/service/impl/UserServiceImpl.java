@@ -88,7 +88,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public ServerResponse<String> checkValid(String str, String type) {
-        if (StringUtils.isNoneBlank(type)) {
+        if (StringUtils.isNoneBlank(str,type)) {
             //开始校验
             int resultCount;
             //按类型校验
@@ -265,6 +265,20 @@ public class UserServiceImpl implements UserService {
         user.setPassword(StringUtils.EMPTY);
 
         return ServerResponse.createBySuccess(user);
+    }
+
+    /**
+     * 校验用户是否是管理员
+     *
+     * @param user
+     * @return
+     */
+    @Override
+    public ServerResponse checkAdminRole(User user) {
+        if (null != user && Const.Role.ROLE_ADMIN == user.getRole()) {
+            return ServerResponse.createBySuccess();
+        }
+        return ServerResponse.createByError();
     }
 
 }
