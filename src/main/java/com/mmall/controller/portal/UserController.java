@@ -34,7 +34,7 @@ public class UserController {
             }
             return response;
         }
-        return ServerResponse.createByErrorMessage("参数错误");
+        return ServerResponse.createByErrorMessage(ResponseCode.ILLEGA_ARGUMENT.getCode(), ResponseCode.ILLEGA_ARGUMENT.getDesc());
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.POST)
@@ -50,7 +50,7 @@ public class UserController {
         if (StringUtils.isNoneBlank(user.getUsername(), user.getPassword(), user.getEmail())) {
             return userService.register(user);
         }
-        return ServerResponse.createByErrorMessage("参数错误");
+        return ServerResponse.createByErrorMessage(ResponseCode.ILLEGA_ARGUMENT.getCode(), ResponseCode.ILLEGA_ARGUMENT.getDesc());
     }
 
     /**
@@ -78,7 +78,7 @@ public class UserController {
         if (StringUtils.isNotBlank(username)) {
             return userService.selectQuestion(username);
         }
-        return ServerResponse.createByErrorMessage("参数错误");
+        return ServerResponse.createByErrorMessage(ResponseCode.ILLEGA_ARGUMENT.getCode(), ResponseCode.ILLEGA_ARGUMENT.getDesc());
     }
 
     @RequestMapping(value = "/forget_check_answer")
@@ -87,7 +87,7 @@ public class UserController {
         if (StringUtils.isNoneBlank(username, question, answer)) {
             return userService.checkAnswer(username, question, answer);
         }
-        return ServerResponse.createByErrorMessage("参数错误");
+        return ServerResponse.createByErrorMessage(ResponseCode.ILLEGA_ARGUMENT.getCode(), ResponseCode.ILLEGA_ARGUMENT.getDesc());
     }
 
     @RequestMapping(value = "/forget_reset_password", method = RequestMethod.POST)
