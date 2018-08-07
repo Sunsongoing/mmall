@@ -2,8 +2,9 @@ package com.mmall.util;
 
 import java.security.MessageDigest;
 
+
 /**
- * Created by geely
+ * @author Sunsongoing
  */
 public class MD5Util {
 
@@ -23,7 +24,7 @@ public class MD5Util {
         }
         int d1 = n / 16;
         int d2 = n % 16;
-        return hexDigits[d1] + hexDigits[d2];
+        return HEX_DIGITS[d1] + HEX_DIGITS[d2];
     }
 
     /**
@@ -44,18 +45,19 @@ public class MD5Util {
                 resultString = byteArrayToHexString(md.digest(resultString.getBytes(charsetname)));
             }
         } catch (Exception exception) {
+            System.err.println("MD5加密异常");
         }
         return resultString.toUpperCase();
     }
 
     public static String MD5EncodeUtf8(String origin) {
         //为密文加盐
-//        origin = origin + PropertiesUtil.getProperty("password.salt", "");
+        origin += PropertiesUtil.getProperty("password.salt", "");
         return MD5Encode(origin, "utf-8");
     }
 
 
-    private static final String hexDigits[] = {"0", "1", "2", "3", "4", "5",
+    private static final String[] HEX_DIGITS = {"0", "1", "2", "3", "4", "5",
             "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"};
 
 }
