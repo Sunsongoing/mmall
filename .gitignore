@@ -19,6 +19,9 @@ hs_err_pid*
 # kdiff3 ignore
 *.orig
 
+#忽略out文件夹
+out/
+
 # maven ignore
 target/
 
