@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+    <!--<settings>-->
+    <!--<setting name="" value=""/>-->
+    <!--</settings>-->
+
+    <!--配置插件-->
+    <plugins>
+
+        <!-- 4.0.0 之后用PageInterceptor ，不再使用 PageHelper； -->
+        <plugin interceptor="com.github.pagehelper.PageInterceptor">
+
+        <!-- 4.0.0 之后就不需要手动设置数据库类型了，会自动检测
+            如果设置了会抛 ClassNotFound 异常
+        -->
+            <!--<property name="dialect" value="Mysql"/>-->
+
+
+            <!-- 设置为true时，会将rowbound第一个参数当成
+                pageNum页码使用-->
+            <property name="offsetAsPageNum" value="true"/>
+            <!-- 设置为true时，使用rowbound分页会进行count查询 -->
+            <property name="rowBoundsWithCount" value="true"/>
+            <!-- 启用合理化时，如果pageNum < 1会查询第一页，
+                 如果pageNum > pages会查询最后一页
+                 禁用时，以上两种情况会返回null-->
+            <property name="reasonable" value="true"/>
+        </plugin>
+    </plugins>
+</configuration>
