@@ -34,7 +34,7 @@ public class UserController {
             }
             return response;
         }
-        return ServerResponse.createByErrorMessage(ResponseCode.ILLEGA_ARGUMENT.getCode(), ResponseCode.ILLEGA_ARGUMENT.getDesc());
+        return ServerResponse.createByErrorMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(), ResponseCode.ILLEGAL_ARGUMENT.getDesc());
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.POST)
@@ -50,7 +50,7 @@ public class UserController {
         if (StringUtils.isNoneBlank(user.getUsername(), user.getPassword(), user.getEmail())) {
             return userService.register(user);
         }
-        return ServerResponse.createByErrorMessage(ResponseCode.ILLEGA_ARGUMENT.getCode(), ResponseCode.ILLEGA_ARGUMENT.getDesc());
+        return ServerResponse.createByErrorMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(), ResponseCode.ILLEGAL_ARGUMENT.getDesc());
     }
 
     /**
@@ -78,7 +78,7 @@ public class UserController {
         if (StringUtils.isNotBlank(username)) {
             return userService.selectQuestion(username);
         }
-        return ServerResponse.createByErrorMessage(ResponseCode.ILLEGA_ARGUMENT.getCode(), ResponseCode.ILLEGA_ARGUMENT.getDesc());
+        return ServerResponse.createByErrorMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(), ResponseCode.ILLEGAL_ARGUMENT.getDesc());
     }
 
     @RequestMapping(value = "/forget_check_answer")
@@ -87,7 +87,7 @@ public class UserController {
         if (StringUtils.isNoneBlank(username, question, answer)) {
             return userService.checkAnswer(username, question, answer);
         }
-        return ServerResponse.createByErrorMessage(ResponseCode.ILLEGA_ARGUMENT.getCode(), ResponseCode.ILLEGA_ARGUMENT.getDesc());
+        return ServerResponse.createByErrorMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(), ResponseCode.ILLEGAL_ARGUMENT.getDesc());
     }
 
     @RequestMapping(value = "/forget_reset_password", method = RequestMethod.POST)
@@ -125,7 +125,7 @@ public class UserController {
     public ServerResponse<User> getInformation(HttpSession session) {
         User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
         if (null == currentUser) {
-            return ServerResponse.createByErrorMessage(ResponseCode.ILLEGA_ARGUMENT.getCode()
+            return ServerResponse.createByErrorMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode()
                     , "未登录，需要强制登录status=10");
         }
         return userService.getInformation(currentUser.getId());
