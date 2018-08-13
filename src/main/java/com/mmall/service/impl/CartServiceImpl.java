@@ -15,8 +15,6 @@ import com.mmall.util.PropertiesUtil;
 import com.mmall.vo.CartProductVo;
 import com.mmall.vo.CartVo;
 import org.apache.commons.collections.CollectionUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -32,8 +30,6 @@ public class CartServiceImpl implements CartService {
     private CartMapper cartMapper;
     @Resource
     private ProductMapper productMapper;
-    Logger l = LoggerFactory.getLogger(CartServiceImpl.class);
-
 
     /**
      * 添加商品到购物车
@@ -202,8 +198,6 @@ public class CartServiceImpl implements CartService {
                         cartProductVo.setQuantity(productStock);
                     }
                     //计算单个订单总价
-                    l.info(BigDecimalUtil.mul(cartProductVo.getQuantity().doubleValue(),
-                            cartProductVo.getProductPrice().doubleValue()) + "");
                     cartProductVo.setProductTotalPrice(BigDecimalUtil.mul(cartProductVo.getQuantity().doubleValue(),
                             cartProductVo.getProductPrice().doubleValue()));
                     cartProductVo.setProductChecked(cartItem.getChecked());
@@ -211,7 +205,6 @@ public class CartServiceImpl implements CartService {
 
                 if (cartItem.getChecked() == Const.Cart.CHECKED) {
                     //计算购物车所有勾选的订单的总价
-                    l.info(cartProductVo.getProductTotalPrice() + "");
                     totalPrice = BigDecimalUtil.add(cartProductVo.getProductTotalPrice().doubleValue(), totalPrice.doubleValue());
                 }
                 cartProductVoList.add(cartProductVo);
