@@ -51,8 +51,8 @@ public class ProductServiceImpl implements ProductService {
                     product.setMainImage(subImageArray[0]);
                 }
             }
-            Product isLive = productMapper.selectByPrimaryKey(product.getId());
-            if (null != isLive) {
+            int checkCount = productMapper.checkProductByPrimaryKey(product.getId(),null);
+            if (checkCount > 0) {
                 //id存在则更新，否则添加
                 int resultCount = productMapper.updateByPrimaryKeySelective(product);
                 if (resultCount > 0) {
@@ -107,7 +107,7 @@ public class ProductServiceImpl implements ProductService {
         if (null == product) {
             return ServerResponse.createByErrorMessage("产品不存在");
         }
-        ProductDetailVo productDetailVo = assembleProductDetailVo(product);
+        ProductDetailVo productDetailVo = this.assembleProductDetailVo(product);
         return ServerResponse.createBySuccess(productDetailVo);
     }
 
@@ -130,7 +130,7 @@ public class ProductServiceImpl implements ProductService {
         if (product.getStatus() != Const.ProductStatusEnum.ON_SALE.getCode()) {
             return ServerResponse.createByErrorMessage("产品已下架或删除");
         }
-        ProductDetailVo productDetailVo = assembleProductDetailVo(product);
+        ProductDetailVo productDetailVo = this.assembleProductDetailVo(product);
         return ServerResponse.createBySuccess(productDetailVo);
     }
 
@@ -149,7 +149,7 @@ public class ProductServiceImpl implements ProductService {
         List<ProductListVo> productListVo = Lists.newArrayList();
 
         for (Product proItem : productList) {
-            ProductListVo productListItem = assembleProductListVo(proItem);
+            ProductListVo productListItem = this.assembleProductListVo(proItem);
             productListVo.add(productListItem);
         }
 
@@ -178,7 +178,7 @@ public class ProductServiceImpl implements ProductService {
         List<ProductListVo> productListVos = Lists.newArrayList();
 
         for (Product pItem : productList) {
-            ProductListVo productListVo = assembleProductListVo(pItem);
+            ProductListVo productListVo = this.assembleProductListVo(pItem);
             productListVos.add(productListVo);
         }
         PageInfo<ProductListVo> pageResult = new PageInfo<>(productListVos);
@@ -229,17 +229,17 @@ public class ProductServiceImpl implements ProductService {
                 categoryIdList.size() == 0 ? null : categoryIdList);
         List<ProductListVo> productListVoList = Lists.newArrayList();
         for (Product product : productList) {
-            ProductListVo productListVo = assembleProductListVo(product);
+            ProductListVo productListVo = this.assembleProductListVo(product);
             productListVoList.add(productListVo);
         }
-        PageInfo<ProductListVo> pageInfo = new PageInfo<>();
+        PageInfo<ProductListVo> pageInfo = new PageInfo<>(productListVoList);
         pageInfo.setList(productListVoList);
         return ServerResponse.createBySuccess(pageInfo);
     }
 
 
     /**
-     * 将product对象转换成productDetailVo对象
+     * 组装productDetailVo对象
      *
      * @param product
      * @return
@@ -276,7 +276,7 @@ public class ProductServiceImpl implements ProductService {
 
 
     /**
-     * 将product对象转换成productListVo对象
+     * 组装productListVo对象
      *
      * @param product
      * @return

@@ -21,10 +21,51 @@
         from mmall_cart
         where id = #{id,jdbcType=INTEGER}
     </select>
+
+    <select id="selectByUserIdProductId" resultMap="BaseResultMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from mmall_cart
+        where user_id = #{userId}
+        and product_id = #{productId}
+    </select>
+
+    <select id="selectByUserId" resultMap="BaseResultMap" parameterType="int">
+        select
+        <include refid="Base_Column_List"/>
+        from mmall_cart
+        where user_id = #{userId}
+    </select>
+
+    <select id="selectCartProductCheckedByUserId" resultType="java.lang.Integer">
+        select count(1)
+        from mmall_cart
+        where checked = 0
+        and user_id = #{userId}
+    </select>
+
+    <select id="selectCartProductCountByUserId" resultType="int" parameterType="integer">
+        select IFNULL(sum(quantity),0) as count
+        from mmall_cart
+        where user_id = #{userId}
+    </select>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from mmall_cart
     where id = #{id,jdbcType=INTEGER}
-  </delete>
+    </delete>
+
+    <delete id="deleteByUserIdProductIds" parameterType="map">
+        delete from mmall_cart
+        where user_id = #{userId}
+        <if test="productList != null">
+            and product_id in
+            <foreach collection="productList" item="item" index="i" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </delete>
+
     <insert id="insert" parameterType="com.mmall.pojo.Cart">
     insert into mmall_cart (id, user_id, product_id, 
       quantity, checked, create_time, 
@@ -33,6 +74,7 @@
       #{quantity,jdbcType=INTEGER}, #{checked,jdbcType=INTEGER}, now(),
       now())
   </insert>
+
     <insert id="insertSelective" parameterType="com.mmall.pojo.Cart">
         insert into mmall_cart
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -106,6 +148,7 @@
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
+
     <update id="updateByPrimaryKey" parameterType="com.mmall.pojo.Cart">
     update mmall_cart
     set user_id = #{userId,jdbcType=INTEGER},
@@ -116,4 +159,14 @@
       update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+    <update id="checkedOrUncheckedProduct" parameterType="map">
+        update mmall_cart
+        set checked = #{checked},
+        update_time = now()
+        where user_id = #{userId}
+        <if test="productId != null">
+            and product_id = #{productId}
+        </if>
+    </update>
 </mapper>

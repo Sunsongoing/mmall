@@ -40,6 +40,31 @@ public class Const {
     }
 
     /**
+     * 购物车常量
+     */
+    public interface Cart {
+        /**
+         * 购物车为选中状态
+         */
+        int CHECKED = 1;
+        /**
+         * 购物车未选中状态
+         */
+        int UN_CHECKED = 0;
+
+        /**
+         * 库存限制失败
+         * 表示库存不足
+         */
+        String LIMIT_NUM_FAIL = "LIMIT_NUM_FAIL";
+        /**
+         * 库存限制成功
+         * 表示库存足够
+         */
+        String LIMIT_NUM_SUCCESS = "LIMIT_NUM_SUCCESS";
+    }
+
+    /**
      * 角色类型常量
      * 接口中的属性默认是静态的常量
      */

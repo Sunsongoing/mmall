@@ -65,6 +65,15 @@
         </if>
     </select>
 
+    <select id="checkProductByPrimaryKey" resultType="java.lang.Integer" parameterType="map">
+        select count(1)
+        from mmall_product
+        where id = #{productId}
+        <if test="status != null">
+            and status = #{status}
+        </if>
+    </select>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from mmall_product
     where id = #{id,jdbcType=INTEGER}

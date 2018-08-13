@@ -16,6 +16,9 @@ import java.util.Date;
 public class DateTimeUtil {
     private static final String STANDARD_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
+    private DateTimeUtil() {
+    }
+
     /**
      * 字符串转日期
      *
