@@ -153,7 +153,7 @@ public class ProductServiceImpl implements ProductService {
             productListVo.add(productListItem);
         }
 
-        PageInfo<ProductListVo> pageResult = new PageInfo<>(productListVo);
+        PageInfo pageResult = new PageInfo<>(productListVo);
         pageResult.setList(productListVo);
         return ServerResponse.createBySuccess(pageResult);
     }
@@ -195,8 +195,8 @@ public class ProductServiceImpl implements ProductService {
      * @return
      */
     @Override
-    public ServerResponse<PageInfo> getProductByKeywordsCategory(String keywords, Integer categoryId,
-                                                                 int pageNum, int pageSize, String orderBy) {
+    public ServerResponse<PageInfo<ProductListVo>> getProductByKeywordsCategory(String keywords, Integer categoryId,
+                                                                                int pageNum, int pageSize, String orderBy) {
         if (StringUtils.isBlank(keywords) && null == categoryId) {
             return ServerResponse.createByErrorMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(), ResponseCode.ILLEGAL_ARGUMENT.getDesc());
         }
@@ -206,8 +206,8 @@ public class ProductServiceImpl implements ProductService {
             if (null == category && StringUtils.isBlank(keywords)) {
                 //没有该分类，并且没有关键字，返回一个空的结果集
                 PageHelper.startPage(pageNum, pageSize);
-                List<ProductDetailVo> productList = Lists.newArrayList();
-                PageInfo<ProductDetailVo> pageInfo = new PageInfo<>(productList);
+                List<ProductListVo> productList = Lists.newArrayList();
+                PageInfo<ProductListVo> pageInfo = new PageInfo<>(productList);
                 pageInfo.setList(productList);
                 return ServerResponse.createBySuccess(pageInfo);
             }

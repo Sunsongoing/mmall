@@ -106,4 +106,147 @@ public class Const {
             return code;
         }
     }
+
+    public enum OrderStatusEnum {
+
+        /**
+         * 订单状态.0-取消 10-未支付 20-已付款 30-已发货 40-订单完成 50-订单关闭
+         */
+        CANCELED("已取消", 0),
+        NO_PAY("未支付", 10),
+        PAID("已付款", 20),
+        SHIPPED("已发货", 30),
+        ORDER_SUCCESS("订单完成", 40),
+        ORDER_CLOSED("订单关闭", 50);
+
+        private String value;
+        private int code;
+
+        OrderStatusEnum(String value, int code) {
+            this.value = value;
+            this.code = code;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public int getCode() {
+            return code;
+        }
+
+        /**
+         * 根据code返回对应枚举
+         * @param code
+         * @return
+         */
+        public static OrderStatusEnum codeOf(int code) {
+            for (OrderStatusEnum ord : values()) {
+                if (ord.getCode() == code) {
+                    return ord;
+                }
+            }
+            throw new RuntimeException("没有找到对应枚举");
+        }
+
+    }
+
+    /**
+     * 支付宝交易状态
+     */
+    public interface AlipayCallback {
+        /**
+         * 交易创建，等待买家付款
+         */
+        String TRADE_STATUS_WAIT_BUYER_PAY = "WAIT_BUYER_PAY";
+        /**
+         * 未付款交易超时关闭，或支付完成后全额退款
+         */
+        String TRADE_STATUS_TRADE_CLOSED = "TRADE_CLOSED";
+        /**
+         * 交易支付成功
+         */
+        String TRADE_STATUS_TRADE_SUCCESS = "TRADE_SUCCESS";
+        /**
+         * 交易结束，不可退款
+         */
+        String TRADE_STATUS_TRADE_FINISHED = "TRADE_FINISHED";
+
+        /**
+         * 回调成功的返回值
+         */
+        String RESPONSE_SUCCESS = "success";
+
+        /**
+         * 回调失败的返回值
+         */
+        String RESPONSE_FAILED = "failure";
+    }
+
+    /**
+     * 支付平台
+     */
+    public enum PayPlatFormEnum {
+        /**
+         * 支付宝
+         */
+        ALIPAY("支付宝", 1);
+
+        private String value;
+        private int code;
+
+        PayPlatFormEnum(String value, int code) {
+            this.value = value;
+            this.code = code;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public int getCode() {
+            return code;
+        }
+    }
+
+    /**
+     * 支付方式
+     */
+    public enum PaymentTypeEnum {
+        /**
+         * 在线支付
+         */
+        ONLINE_PAY("在线支付", 1);
+
+        private String value;
+        private int code;
+
+        PaymentTypeEnum(String value, int code) {
+            this.value = value;
+            this.code = code;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public int getCode() {
+            return code;
+        }
+
+        /**
+         * 根据枚举的code返回对应枚举
+         *
+         * @param code
+         * @return
+         */
+        public static PaymentTypeEnum codeOf(int code) {
+            for (PaymentTypeEnum p : values()) {
+                if (p.getCode() == code) {
+                    return p;
+                }
+            }
+            throw new RuntimeException("没有找到对应枚举");
+        }
+    }
 }

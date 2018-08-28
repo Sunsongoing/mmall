@@ -50,10 +50,10 @@ public class FileServiceImpl implements FileService {
 
         File targetFile = new File(path, uploadFileName);
         try {
+            //将上传的文件写入到服务器指定文件
             file.transferTo(targetFile);
             if (StringUtils.isBlank(remotePath)) {
-                remotePath = "img";
-//                remotePath = "images";
+                remotePath = "images";
             }
             //将targetFile上传到FTP服务器
             boolean result = FTPUtil.uploadFile(Lists.newArrayList(targetFile), remotePath);

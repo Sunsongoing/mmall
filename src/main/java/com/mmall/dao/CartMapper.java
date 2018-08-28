@@ -74,6 +74,7 @@ public interface CartMapper {
 
     /**
      * 根据用户id来查找对应用户的购物车，判断购物车是否是勾选状态
+     *
      * @param userId
      * @return
      */
@@ -81,28 +82,38 @@ public interface CartMapper {
 
     /**
      * 根据用户id和商品列表来删除购物车
+     *
      * @param userId
      * @param productList
      * @return
      */
-    int deleteByUserIdProductIds(@Param("userId") Integer userId,@Param("productList") List<String> productList);
+    int deleteByUserIdProductIds(@Param("userId") Integer userId, @Param("productList") List<String> productList);
 
     /**
      * 将购物车的商品勾选或反选
      * 如果productId = null 表示全选或全反选
+     *
      * @param userId
      * @param productId
      * @param checked
      * @return
      */
-    int checkedOrUncheckedProduct(@Param("userId") Integer userId,@Param("productId") Integer productId,
+    int checkedOrUncheckedProduct(@Param("userId") Integer userId, @Param("productId") Integer productId,
                                   @Param("checked") Integer checked);
 
     /**
      * 查找当前用户购物车中的商品总数
+     *
      * @param userId
      * @return
      */
     int selectCartProductCountByUserId(Integer userId);
 
+    /**
+     * 获取用户购物车中已经勾选的商品
+     *
+     * @param userId
+     * @return
+     */
+    List<Cart> selectCheckedByUserId(Integer userId);
 }

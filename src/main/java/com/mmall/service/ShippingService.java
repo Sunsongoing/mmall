@@ -18,5 +18,5 @@ public interface ShippingService {
 
     ServerResponse<Shipping> select(Integer userId, Integer shippingId);
 
-    ServerResponse<PageInfo> list(Integer userId, int pageNum, int pageSize);
+    ServerResponse<PageInfo<Shipping>> list(Integer userId, int pageNum, int pageSize);
 }

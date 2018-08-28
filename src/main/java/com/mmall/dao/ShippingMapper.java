@@ -84,4 +84,12 @@ public interface ShippingMapper {
      * @return
      */
     List<Shipping> selectByUserId(Integer userId);
+
+    /**
+     * 校验shipping是否是当前用户的
+     * @param userId
+     * @param shippingId
+     * @return
+     */
+    int checkShippingIdUserId(@Param("userId") Integer userId,@Param("shippingId") Integer shippingId);
 }

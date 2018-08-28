@@ -24,7 +24,8 @@
     <!--4.扫描dao 的mapper接口-->
 
     <!--加载数据库配置文件-->
-    <context:property-placeholder location="classpath:datasource.properties"/>
+    <!--context:property-placeholder 只能存在一个多个只读取第一个其余忽略-->
+    <context:property-placeholder location="classpath:datasource.properties,classpath:redis.properties"/>
 
     <!--数据库druid连接池-->
     <bean id="datasource" class="com.alibaba.druid.pool.DruidDataSource">
