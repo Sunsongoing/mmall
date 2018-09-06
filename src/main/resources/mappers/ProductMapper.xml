@@ -44,9 +44,34 @@
                 and name like #{productName}
             </if>
             <if test="productId != null">
-                and productId = #{productId}
+                and id = #{productId}
             </if>
         </where>
+    </select>
+
+    <select id="selectByNameAndCategoryIds" resultMap="BaseResultMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from mmall_product
+        where status = 1
+        <if test="productName != null">
+            and name like #{productName}
+        </if>
+        <if test="categoryIdList != null">
+            and category_id in
+            <foreach collection="categoryIdList" index="i" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="checkProductByPrimaryKey" resultType="java.lang.Integer" parameterType="map">
+        select count(1)
+        from mmall_product
+        where id = #{productId}
+        <if test="status != null">
+            and status = #{status}
+        </if>
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
@@ -98,12 +123,8 @@
             <if test="status != null">
                 status,
             </if>
-            <if test="createTime != null">
-                create_time,
-            </if>
-            <if test="updateTime != null">
-                update_time,
-            </if>
+            create_time,
+            update_time,
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -136,12 +157,8 @@
             <if test="status != null">
                 #{status,jdbcType=INTEGER},
             </if>
-            <if test="createTime != null">
-                now(),
-            </if>
-            <if test="updateTime != null">
-                now(),
-            </if>
+            now(),
+            now(),
         </trim>
     </insert>
     <update id="updateByPrimaryKeySelective" parameterType="com.mmall.pojo.Product">
@@ -177,9 +194,7 @@
             <if test="createTime != null">
                 create_time = #{createTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="updateTime != null">
-                update_time = now(),
-            </if>
+            update_time = now(),
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>

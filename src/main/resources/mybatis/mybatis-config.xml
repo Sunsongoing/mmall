@@ -5,7 +5,7 @@
 
 <configuration>
     <!--<settings>-->
-    <!--<setting name="" value=""/>-->
+        <!--<setting name="logImpl" value="STDOUT_LOGGING"/>-->
     <!--</settings>-->
 
     <!--配置插件-->
@@ -14,9 +14,9 @@
         <!-- 4.0.0 之后用PageInterceptor ，不再使用 PageHelper； -->
         <plugin interceptor="com.github.pagehelper.PageInterceptor">
 
-        <!-- 4.0.0 之后就不需要手动设置数据库类型了，会自动检测
-            如果设置了会抛 ClassNotFound 异常
-        -->
+            <!-- 4.0.0 之后就不需要手动设置数据库类型了，会自动检测
+                如果设置了会抛 ClassNotFound 异常
+            -->
             <!--<property name="dialect" value="Mysql"/>-->
 
 

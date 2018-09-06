@@ -26,10 +26,27 @@
         from mmall_order_item
         where id = #{id,jdbcType=INTEGER}
     </select>
+
+    <select id="selectByOrderNoUserId" resultMap="BaseResultMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from mmall_order_item
+        where order_no = #{orderNo}
+        and user_id = #{userId}
+    </select>
+
+    <select id="selectByOrderNo" resultMap="BaseResultMap" parameterType="long">
+        select
+        <include refid="Base_Column_List"/>
+        from mmall_order_item
+        where order_no = #{orderNo}
+    </select>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from mmall_order_item
     where id = #{id,jdbcType=INTEGER}
-  </delete>
+    </delete>
+
     <insert id="insert" parameterType="com.mmall.pojo.OrderItem">
     insert into mmall_order_item (id, user_id, order_no, 
       product_id, product_name, product_image, 
@@ -70,12 +87,8 @@
             <if test="totalPrice != null">
                 total_price,
             </if>
-            <if test="createTime != null">
-                create_time,
-            </if>
-            <if test="updateTime != null">
-                update_time,
-            </if>
+            create_time,
+            update_time,
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -105,14 +118,28 @@
             <if test="totalPrice != null">
                 #{totalPrice,jdbcType=DECIMAL},
             </if>
-            <if test="createTime != null">
-                now(),
-            </if>
-            <if test="updateTime != null">
-                now(),
-            </if>
+            now(),
+            now(),
         </trim>
     </insert>
+
+    <insert id="batchInsert" parameterType="list">
+        insert into mmall_order_item (id, user_id, order_no,
+        product_id, product_name, product_image,
+        current_unit_price, quantity, total_price,
+        create_time, update_time)
+        values
+        <foreach collection="orderItemList" item="item" index="i" separator="," >
+            (
+            #{item.id,jdbcType=INTEGER},#{item.userId,jdbcType=INTEGER},
+            #{item.orderNo,jdbcType=BIGINT},#{item.productId,jdbcType=INTEGER},
+            #{item.productName,jdbcType=VARCHAR},#{item.productImage,jdbcType=VARCHAR},
+            #{item.currentUnitPrice,jdbcType=DECIMAL},#{item.quantity,jdbcType=INTEGER},
+            #{item.totalPrice,jdbcType=DECIMAL},now(),now()
+            )
+        </foreach>
+    </insert>
+
     <update id="updateByPrimaryKeySelective" parameterType="com.mmall.pojo.OrderItem">
         update mmall_order_item
         <set>
@@ -143,9 +170,7 @@
             <if test="createTime != null">
                 create_time = #{createTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="updateTime != null">
-                update_time = now(),
-            </if>
+            update_time = now(),
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>

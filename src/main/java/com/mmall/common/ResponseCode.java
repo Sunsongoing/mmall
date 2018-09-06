@@ -14,7 +14,7 @@ public enum ResponseCode {
     //需要登录
     NEED_LOGIN(10, "NEED_LOGIN"),
     //参数错误
-    ILLEGA_ARGUMENT(2, "ILLEGA_ARGUMENT");
+    ILLEGAL_ARGUMENT(2, "ILLEGAL_ARGUMENT");
     /**
      * 响应码
      */

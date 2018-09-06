@@ -23,16 +23,49 @@
     id, order_no, user_id, shipping_id, payment, payment_type, postage, status, payment_time, 
     send_time, end_time, close_time, create_time, update_time
   </sql>
+
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
         <include refid="Base_Column_List"/>
         from mmall_order
         where id = #{id,jdbcType=INTEGER}
     </select>
+
+    <select id="selectByUserIdAndOrderNo" resultMap="BaseResultMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from mmall_order
+        where order_no = #{orderNo}
+        and user_id = #{userId}
+    </select>
+
+    <select id="selectByOrderNo" resultMap="BaseResultMap" parameterType="long">
+        select
+        <include refid="Base_Column_List"/>
+        from mmall_order
+        where order_no = #{orderNo}
+    </select>
+
+    <select id="selectListByUserId" resultMap="BaseResultMap" parameterType="integer">
+        select
+        <include refid="Base_Column_List"/>
+        from mmall_order
+        where user_id = #{userId}
+        order by create_time desc
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mmall_order
+        order by create_time desc
+    </select>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from mmall_order
     where id = #{id,jdbcType=INTEGER}
   </delete>
+
     <insert id="insert" parameterType="com.mmall.pojo.Order">
     insert into mmall_order (id, order_no, user_id, 
       shipping_id, payment, payment_type, 
@@ -45,6 +78,7 @@
       #{sendTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{closeTime,jdbcType=TIMESTAMP}, 
       now(), now())
   </insert>
+
     <insert id="insertSelective" parameterType="com.mmall.pojo.Order">
         insert into mmall_order
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -84,12 +118,8 @@
             <if test="closeTime != null">
                 close_time,
             </if>
-            <if test="createTime != null">
-                create_time,
-            </if>
-            <if test="updateTime != null">
-                update_time,
-            </if>
+            create_time,
+            update_time,
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -128,12 +158,8 @@
             <if test="closeTime != null">
                 #{closeTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="createTime != null">
-                nwo(),
-            </if>
-            <if test="updateTime != null">
-                now(),
-            </if>
+            now(),
+            now(),
         </trim>
     </insert>
     <update id="updateByPrimaryKeySelective" parameterType="com.mmall.pojo.Order">
@@ -175,9 +201,7 @@
             <if test="createTime != null">
                 create_time = #{createTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="updateTime != null">
-                update_time = now(),
-            </if>
+            update_time = now(),
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
