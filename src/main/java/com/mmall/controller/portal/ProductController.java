@@ -4,7 +4,6 @@ import com.github.pagehelper.PageInfo;
 import com.mmall.common.ServerResponse;
 import com.mmall.service.ProductService;
 import com.mmall.vo.ProductDetailVo;
-import com.mmall.vo.ProductListVo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,7 +29,7 @@ public class ProductController {
 
     @RequestMapping("/list")
     @ResponseBody
-    public ServerResponse<PageInfo<ProductListVo>> list(@RequestParam(value = "keywords", required = false) String keywords,
+    public ServerResponse<PageInfo> list(@RequestParam(value = "keywords", required = false) String keywords,
                                                         @RequestParam(value = "categoryId", required = false) Integer categoryId,
                                                         @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                                                         @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,

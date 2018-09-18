@@ -29,8 +29,8 @@ public class OrderManageController {
 
     @RequestMapping("/list")
     @ResponseBody
-    public ServerResponse<PageInfo<OrderVo>> list(HttpSession session, @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
-                                                  @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
+    public ServerResponse<PageInfo> list(HttpSession session, @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+                                         @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
         User user = (User) session.getAttribute(Const.CURRENT_USER);
         if (null == user) {
             return ServerResponse.createByErrorMessage(ResponseCode.NEED_LOGIN.getCode(),
@@ -63,9 +63,9 @@ public class OrderManageController {
 
     @RequestMapping("/search")
     @ResponseBody
-    public ServerResponse<PageInfo<OrderVo>> search(HttpSession session, Long orderNo,
-                                                    @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
-                                                    @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
+    public ServerResponse<PageInfo> search(HttpSession session, Long orderNo,
+                                           @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+                                           @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
         User user = (User) session.getAttribute(Const.CURRENT_USER);
         if (null == user) {
             return ServerResponse.createByErrorMessage(ResponseCode.NEED_LOGIN.getCode(),
