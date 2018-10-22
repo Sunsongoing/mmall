@@ -25,4 +25,5 @@ public interface ProductService {
 
     ServerResponse<PageInfo> getProductByKeywordsCategory(String keywords, Integer categoryId, int pageNum,
                                                           int pageSize, String orderBy);
+
 }

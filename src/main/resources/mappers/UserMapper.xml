@@ -73,6 +73,11 @@
       and id != #{userId}
     </select>
 
+    <select id="selectCount" resultType="java.lang.Integer">
+        select count(1)
+        from mmall_user
+    </select>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from mmall_user
     where id = #{id,jdbcType=INTEGER}

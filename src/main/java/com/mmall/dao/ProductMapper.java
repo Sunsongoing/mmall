@@ -86,4 +86,10 @@ public interface ProductMapper {
      * @return
      */
     List<Product> selectByNameAndCategoryIds(@Param("productName") String productName, @Param("categoryIdList") List<Integer> categoryIdList);
+
+    /**
+     * 管理员-查询商品总数
+     * @return  商品总数
+     */
+    int selectCount();
 }
