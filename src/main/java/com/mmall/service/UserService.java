@@ -28,4 +28,5 @@ public interface UserService {
 
     ServerResponse checkAdminRole(User user);
 
+    ServerResponse selectUserList(int pageSize,int pageNum);
 }

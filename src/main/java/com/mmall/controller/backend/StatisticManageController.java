@@ -8,6 +8,7 @@ import com.mmall.pojo.User;
 import com.mmall.service.StatisticService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
@@ -17,16 +18,17 @@ import javax.servlet.http.HttpSession;
  */
 
 @Controller
-@RequestMapping("")
+@RequestMapping("/manage/statistic")
 public class StatisticManageController {
     @Resource
     private StatisticService statisticService;
 
     @RequestMapping("/base_count")
+    @ResponseBody
     public ServerResponse<Statistic> baseCount(HttpSession session) {
         User user = (User) session.getAttribute(Const.CURRENT_USER);
         if (null != user) {
-            return statisticService.baseCount();
+            return statisticService.baseCount(user);
         }
         // 用户未登录提示登录
         return ServerResponse.createByErrorMessage(ResponseCode.NEED_LOGIN.getCode(),

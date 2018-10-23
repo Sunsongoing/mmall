@@ -67,7 +67,7 @@ public interface ProductMapper {
      *
      * @return
      */
-    List<Product> selectList();
+    List<Product> selectList(@Param("pageNum") int pageNum, @Param("pageSize") int pageSize);
 
     /**
      * 根据商品关键字或商品id搜索商品
@@ -89,7 +89,8 @@ public interface ProductMapper {
 
     /**
      * 管理员-查询商品总数
-     * @return  商品总数
+     *
+     * @return 商品总数
      */
     int selectCount();
 }

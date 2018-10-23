@@ -44,7 +44,7 @@
         and user_id = #{userId}
     </select>
 
-    <select id="selectCartProductCountByUserId" resultType="int" parameterType="integer">
+    <select id="selectCartProductCountByUserId" resultType="java.lang.Integer" parameterType="integer">
         select IFNULL(sum(quantity),0) as count
         from mmall_cart
         where user_id = #{userId}

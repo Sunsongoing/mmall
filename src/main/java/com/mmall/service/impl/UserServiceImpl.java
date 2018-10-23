@@ -1,5 +1,7 @@
 package com.mmall.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.mmall.common.Const;
 import com.mmall.common.ServerResponse;
 import com.mmall.common.TokenCache;
@@ -11,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -88,7 +91,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public ServerResponse<String> checkValid(String str, String type) {
-        if (StringUtils.isNoneBlank(str,type)) {
+        if (StringUtils.isNoneBlank(str, type)) {
             //开始校验
             int resultCount;
             //按类型校验
@@ -279,6 +282,21 @@ public class UserServiceImpl implements UserService {
             return ServerResponse.createBySuccess();
         }
         return ServerResponse.createByError();
+    }
+
+    @Override
+    public ServerResponse selectUserList(int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+
+        List<User> userList = userMapper.selectList(pageNum, pageSize);
+        for (User u :
+                userList) {
+            u.setPassword("");
+        }
+        PageInfo pageInfo = new PageInfo(userList);
+        pageInfo.setList(userList);
+
+        return ServerResponse.createBySuccess(pageInfo);
     }
 
 }

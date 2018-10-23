@@ -145,7 +145,7 @@ public class ProductServiceImpl implements ProductService {
     public ServerResponse<PageInfo> getList(int pageNum, int pageSize) {
         //使用pageHelper
         PageHelper.startPage(pageNum, pageSize);
-        List<Product> productList = productMapper.selectList();
+        List<Product> productList = productMapper.selectList(pageNum,pageSize);
         List<ProductListVo> productListVo = Lists.newArrayList();
 
         for (Product proItem : productList) {

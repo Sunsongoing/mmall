@@ -1,12 +1,14 @@
 package com.mmall.controller.backend;
 
 import com.mmall.common.Const;
+import com.mmall.common.ResponseCode;
 import com.mmall.common.ServerResponse;
 import com.mmall.pojo.User;
 import com.mmall.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
@@ -37,5 +39,23 @@ public class UserManageController {
             }
         }
         return response;
+    }
+
+    @RequestMapping(value = "/list", method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse getUserList(HttpSession session,
+                                      @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+                                      @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
+        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        if (null != user) {
+            if (user.getRole() == Const.Role.ROLE_ADMIN) {
+                return userService.selectUserList(pageNum,pageSize);
+            } else {
+                return ServerResponse.createByErrorMessage("需要管理员权限");
+            }
+        }
+
+        return ServerResponse.createByErrorMessage(ResponseCode.NEED_LOGIN.getCode(),
+                ResponseCode.NEED_LOGIN.getDesc());
     }
 }
