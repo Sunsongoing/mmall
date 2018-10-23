@@ -214,11 +214,11 @@ public class OrderServiceImpl implements OrderService {
      * @return
      */
     @Override
-    public ServerResponse<PageInfo<OrderVo>> list(Integer userId, int pageNum, int pageSize) {
+    public ServerResponse<PageInfo> list(Integer userId, int pageNum, int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<Order> orderList = orderMapper.selectListByUserId(userId);
         List<OrderVo> orderVoList = assembleOrderVoList(orderList, userId);
-        PageInfo<OrderVo> pageInfo = new PageInfo<>(orderVoList);
+        PageInfo pageInfo = new PageInfo(orderList);
         pageInfo.setList(orderVoList);
         return ServerResponse.createBySuccess(pageInfo);
     }
@@ -231,11 +231,11 @@ public class OrderServiceImpl implements OrderService {
      * @return
      */
     @Override
-    public ServerResponse<PageInfo<OrderVo>> manageList(int pageNum, int pageSize) {
+    public ServerResponse<PageInfo> manageList(int pageNum, int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<Order> allOrderList = orderMapper.selectAll();
         List<OrderVo> orderVoList = this.assembleOrderVoList(allOrderList, null);
-        PageInfo<OrderVo> pageInfo = new PageInfo<>(orderVoList);
+        PageInfo pageInfo = new PageInfo(allOrderList);
         pageInfo.setList(orderVoList);
         return ServerResponse.createBySuccess(pageInfo);
     }
@@ -264,16 +264,16 @@ public class OrderServiceImpl implements OrderService {
      * @return
      */
     @Override
-    public ServerResponse<PageInfo<OrderVo>> manageSearch(Long orderNo, int pageNum, int pageSize) {
-        PageHelper.startPage(pageNum, pageSize);
+    public ServerResponse<PageInfo> manageSearch(Long orderNo, int pageNum, int pageSize) {
         Order order = orderMapper.selectByOrderNo(orderNo);
         if (null == order) {
             return ServerResponse.createByErrorMessage("订单不存在");
         }
+        PageHelper.startPage(pageNum, pageSize);
         List<OrderItem> orderItemList = orderItemMapper.selectByOrderNo(orderNo);
         OrderVo orderVo = this.assembleOrderVo(order, orderItemList);
         List<OrderVo> orderVoList = Lists.newArrayList(orderVo);
-        PageInfo<OrderVo> pageInfo = new PageInfo<>(orderVoList);
+        PageInfo pageInfo = new PageInfo(orderItemList);
         pageInfo.setList(orderVoList);
         return ServerResponse.createBySuccess(pageInfo);
     }

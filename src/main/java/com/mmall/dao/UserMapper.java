@@ -116,11 +116,18 @@ public interface UserMapper {
     int checkPassword(@Param("userId") Integer userId, @Param("password") String password);
 
     /**
-     *  根据用户id来校验email
+     * 根据用户id来校验email
      *
      * @param userId
      * @param email
      * @return
      */
     int checkEmailByUserId(@Param("userId") Integer userId, @Param("email") String email);
+
+    /**
+     * 管理员-查询用户总数
+     *
+     * @return 用户总数
+     */
+    int selectCount();
 }

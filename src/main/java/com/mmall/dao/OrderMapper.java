@@ -73,6 +73,7 @@ public interface OrderMapper {
 
     /**
      * 查找用户id对应的订单列表
+     *
      * @param userId
      * @return
      */
@@ -80,7 +81,15 @@ public interface OrderMapper {
 
     /**
      * 管理员-查询所有订单
+     *
      * @return
      */
     List<Order> selectAll();
+
+    /**
+     * 管理员-查询订单总数
+     *
+     * @return 订单总数
+     */
+    int selectCount();
 }

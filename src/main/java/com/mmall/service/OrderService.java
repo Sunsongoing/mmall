@@ -20,13 +20,13 @@ public interface OrderService {
 
     ServerResponse getOrderDetail(Integer userId, Long orderNo);
 
-    ServerResponse<PageInfo<OrderVo>> list(Integer userId, int pageNum, int pageSize);
+    ServerResponse<PageInfo> list(Integer userId, int pageNum, int pageSize);
 
-    ServerResponse<PageInfo<OrderVo>> manageList(int pageNum, int pageSize);
+    ServerResponse<PageInfo> manageList(int pageNum, int pageSize);
 
     ServerResponse<OrderVo> manageDetail(Long orderNo);
 
-    ServerResponse<PageInfo<OrderVo>> manageSearch(Long orderNo, int pageNum, int pageSize);
+    ServerResponse<PageInfo> manageSearch(Long orderNo, int pageNum, int pageSize);
 
     ServerResponse<String> manageSendGoods(Long orderNo);
 

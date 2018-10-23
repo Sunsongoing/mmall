@@ -153,7 +153,7 @@ public class ProductServiceImpl implements ProductService {
             productListVo.add(productListItem);
         }
 
-        PageInfo pageResult = new PageInfo<>(productListVo);
+        PageInfo pageResult = new PageInfo(productList);
         pageResult.setList(productListVo);
         return ServerResponse.createBySuccess(pageResult);
     }
@@ -169,11 +169,11 @@ public class ProductServiceImpl implements ProductService {
      */
     @Override
     public ServerResponse searchProduct(String productName, Integer productId, int pageNum, int pageSize) {
-        PageHelper.startPage(pageNum, pageSize);
         if (StringUtils.isNotBlank(productName)) {
             productName = new StringBuffer().append("%").append(productName).append("%").toString();
         }
 
+        PageHelper.startPage(pageNum, pageSize);
         List<Product> productList = productMapper.selectByNameAndProductId(productName, productId);
         List<ProductListVo> productListVos = Lists.newArrayList();
 
@@ -181,7 +181,7 @@ public class ProductServiceImpl implements ProductService {
             ProductListVo productListVo = this.assembleProductListVo(pItem);
             productListVos.add(productListVo);
         }
-        PageInfo<ProductListVo> pageResult = new PageInfo<>(productListVos);
+        PageInfo pageResult = new PageInfo(productList);
         pageResult.setList(productListVos);
         return ServerResponse.createBySuccess(pageResult);
     }
@@ -195,8 +195,8 @@ public class ProductServiceImpl implements ProductService {
      * @return
      */
     @Override
-    public ServerResponse<PageInfo<ProductListVo>> getProductByKeywordsCategory(String keywords, Integer categoryId,
-                                                                                int pageNum, int pageSize, String orderBy) {
+    public ServerResponse<PageInfo> getProductByKeywordsCategory(String keywords, Integer categoryId,
+                                                                 int pageNum, int pageSize, String orderBy) {
         if (StringUtils.isBlank(keywords) && null == categoryId) {
             return ServerResponse.createByErrorMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(), ResponseCode.ILLEGAL_ARGUMENT.getDesc());
         }
@@ -207,7 +207,7 @@ public class ProductServiceImpl implements ProductService {
                 //没有该分类，并且没有关键字，返回一个空的结果集
                 PageHelper.startPage(pageNum, pageSize);
                 List<ProductListVo> productList = Lists.newArrayList();
-                PageInfo<ProductListVo> pageInfo = new PageInfo<>(productList);
+                PageInfo pageInfo = new PageInfo(productList);
                 pageInfo.setList(productList);
                 return ServerResponse.createBySuccess(pageInfo);
             }
@@ -217,7 +217,6 @@ public class ProductServiceImpl implements ProductService {
         if (StringUtils.isNotBlank(keywords)) {
             keywords = new StringBuffer().append("%").append(keywords).append("%").toString();
         }
-        PageHelper.startPage(pageNum, pageSize);
         //排序处理
         if (StringUtils.isNotBlank(orderBy)) {
             if (Const.ProductListOrderBy.PRICE_ASC_DESC.contains(orderBy)) {
@@ -225,14 +224,17 @@ public class ProductServiceImpl implements ProductService {
                 PageHelper.orderBy(orderByParam[0] + " " + orderByParam[1]);
             }
         }
+        PageHelper.startPage(pageNum, pageSize);
         List<Product> productList = productMapper.selectByNameAndCategoryIds(StringUtils.isBlank(keywords) ? null : keywords,
                 categoryIdList.size() == 0 ? null : categoryIdList);
+
         List<ProductListVo> productListVoList = Lists.newArrayList();
         for (Product product : productList) {
             ProductListVo productListVo = this.assembleProductListVo(product);
             productListVoList.add(productListVo);
         }
-        PageInfo<ProductListVo> pageInfo = new PageInfo<>(productListVoList);
+        System.out.println(productListVoList);
+        PageInfo pageInfo = new PageInfo(productList);
         pageInfo.setList(productListVoList);
         return ServerResponse.createBySuccess(pageInfo);
     }

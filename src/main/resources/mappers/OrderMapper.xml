@@ -61,6 +61,11 @@
         order by create_time desc
     </select>
 
+    <select id="selectCount" resultType="java.lang.Integer">
+      select count(1)
+      from  mmall_order
+    </select>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from mmall_order
     where id = #{id,jdbcType=INTEGER}
