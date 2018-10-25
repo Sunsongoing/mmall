@@ -3,6 +3,8 @@ package com.mmall.dao;
 import com.mmall.pojo.User;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 public interface UserMapper {
 
     /**
@@ -130,4 +132,13 @@ public interface UserMapper {
      * @return 用户总数
      */
     int selectCount();
+
+    /**
+     * 管理员-查询用户列表
+     *
+     * @param pageNum
+     * @param pageSize
+     * @return 用户列表
+     */
+    List<User> selectList(@Param("pageNum") int pageNum, @Param("pageSize") int pageSize);
 }

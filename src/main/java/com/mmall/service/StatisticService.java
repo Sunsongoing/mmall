@@ -2,6 +2,7 @@ package com.mmall.service;
 
 import com.mmall.common.ServerResponse;
 import com.mmall.pojo.Statistic;
+import com.mmall.pojo.User;
 
 /**
  * @author Zjl
@@ -9,5 +10,5 @@ import com.mmall.pojo.Statistic;
 
 public interface StatisticService {
 
-    ServerResponse<Statistic> baseCount();
+    ServerResponse<Statistic> baseCount(User user);
 }
