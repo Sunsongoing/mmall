@@ -95,7 +95,9 @@ public class OrderServiceImpl implements OrderService {
 
         //从购物车中获取数据
         List<Cart> cartList = cartMapper.selectCheckedByUserId(userId);
-
+        if (null == cartList || cartList.isEmpty()) {
+            return ServerResponse.createByErrorMessage("购物车为空");
+        }
         //计算订单总价
         ServerResponse<List<OrderItem>> serverResponse = this.getCartOrderItem(userId, cartList);
         if (!serverResponse.isSuccess()) {
