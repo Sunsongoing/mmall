@@ -48,11 +48,11 @@ public class ProductDetailVo {
         this.name = name;
     }
 
-    public String getSubTiltle() {
+    public String getSubtitle() {
         return subtitle;
     }
 
-    public void setSubTiltle(String subtitle) {
+    public void setSubtitle(String subtitle) {
         this.subtitle = subtitle;
     }
 
@@ -64,11 +64,11 @@ public class ProductDetailVo {
         this.mainImage = mainImage;
     }
 
-    public String getSubImage() {
+    public String getSubImages() {
         return subImages;
     }
 
-    public void setSubImage(String subImages) {
+    public void setSubImages(String subImages) {
         this.subImages = subImages;
     }
 
