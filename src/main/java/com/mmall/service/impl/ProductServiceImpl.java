@@ -259,14 +259,14 @@ public class ProductServiceImpl implements ProductService {
         productDetailVo.setStock(product.getStock());
         productDetailVo.setStatus(product.getStatus());
         //imageHost
-        productDetailVo.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix", "http://img.happymmall.com/"));
+        productDetailVo.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix", "http://img.zjlssr.xyz/"));
         //parentCategoryId
         Category category = categoryMapper.selectByPrimaryKey(product.getCategoryId());
         if (null == category) {
             //默认根节点
             productDetailVo.setParentCategoryId(0);
         } else {
-            productDetailVo.setParentCategoryId(category.getId());
+            productDetailVo.setParentCategoryId(category.getParentId());
         }
         //createTime
         productDetailVo.setCreateTime(DateTimeUtil.date2Str(product.getCreateTime()));
@@ -289,7 +289,7 @@ public class ProductServiceImpl implements ProductService {
         productListVo.setName(product.getName());
         productListVo.setCategoryId(product.getCategoryId());
         //imageHost
-        productListVo.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix", "http://img.happymmall.com/"));
+        productListVo.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix", "http://img.zjlssr.xyz/"));
         productListVo.setMainImage(product.getMainImage());
         productListVo.setSubtitle(product.getSubtitle());
         productListVo.setPrice(product.getPrice());
