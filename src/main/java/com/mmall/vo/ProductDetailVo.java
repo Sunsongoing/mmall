@@ -11,9 +11,9 @@ public class ProductDetailVo {
     private Integer id;
     private Integer categoryId;
     private String name;
-    private String subTiltle;
+    private String subtitle;
     private String mainImage;
-    private String subImage;
+    private String subImages;
     private String detail;
     private BigDecimal price;
     private Integer stock;
@@ -49,11 +49,11 @@ public class ProductDetailVo {
     }
 
     public String getSubTiltle() {
-        return subTiltle;
+        return subtitle;
     }
 
-    public void setSubTiltle(String subTiltle) {
-        this.subTiltle = subTiltle;
+    public void setSubTiltle(String subtitle) {
+        this.subtitle = subtitle;
     }
 
     public String getMainImage() {
@@ -65,11 +65,11 @@ public class ProductDetailVo {
     }
 
     public String getSubImage() {
-        return subImage;
+        return subImages;
     }
 
-    public void setSubImage(String subImage) {
-        this.subImage = subImage;
+    public void setSubImage(String subImages) {
+        this.subImages = subImages;
     }
 
     public String getDetail() {
