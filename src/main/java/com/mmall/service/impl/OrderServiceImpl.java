@@ -2,15 +2,20 @@ package com.mmall.service.impl;
 
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayResponse;
+import com.alipay.api.domain.TradeFundBill;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.response.AlipayTradePrecreateResponse;
+import com.alipay.api.response.AlipayTradeQueryResponse;
 import com.alipay.demo.trade.config.Configs;
 import com.alipay.demo.trade.model.ExtendParams;
 import com.alipay.demo.trade.model.GoodsDetail;
 import com.alipay.demo.trade.model.builder.AlipayTradePrecreateRequestBuilder;
+import com.alipay.demo.trade.model.builder.AlipayTradeQueryRequestBuilder;
 import com.alipay.demo.trade.model.result.AlipayF2FPrecreateResult;
+import com.alipay.demo.trade.model.result.AlipayF2FQueryResult;
 import com.alipay.demo.trade.service.AlipayTradeService;
 import com.alipay.demo.trade.service.impl.AlipayTradeServiceImpl;
+import com.alipay.demo.trade.utils.Utils;
 import com.alipay.demo.trade.utils.ZxingUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -702,9 +707,9 @@ public class OrderServiceImpl implements OrderService {
     /**
      * 查询订单支付状态
      *
-     * @param userId
-     * @param orderNo
-     * @return
+     * @param userId  用户ID
+     * @param orderNo 订单号(必填) 商户订单号，通过此商户订单号查询当面付的交易状态
+     * @return 订单的状态
      */
     @Override
     public ServerResponse queryOrderPayStatus(Integer userId, Long orderNo) {
@@ -712,10 +717,53 @@ public class OrderServiceImpl implements OrderService {
         if (null == order) {
             return ServerResponse.createByErrorMessage("订单不存在");
         }
-        if (order.getStatus() >= Const.OrderStatusEnum.PAID.getCode()) {
-            return ServerResponse.createBySuccess();
+        // 创建查询请求builder，设置请求参数
+        AlipayTradeQueryRequestBuilder builder = new AlipayTradeQueryRequestBuilder()
+                .setOutTradeNo(orderNo.toString());
+
+        AlipayF2FQueryResult result = tradeService.queryTradeResult(builder);
+        switch (result.getTradeStatus()) {
+            case SUCCESS:
+                log.info("查询返回该订单支付成功: )");
+
+                AlipayTradeQueryResponse response = result.getResponse();
+                dumpResponse(response);
+
+                log.info(response.getTradeStatus());
+                if (Utils.isListNotEmpty(response.getFundBillList())) {
+                    for (TradeFundBill bill : response.getFundBillList()) {
+                        log.info(bill.getFundChannel() + ":" + bill.getAmount());
+                    }
+                }
+
+                if (order.getStatus() != Const.OrderStatusEnum.PAID.getCode()) {
+                    order.setStatus(Const.OrderStatusEnum.PAID.getCode());
+                    orderMapper.updateByPrimaryKeySelective(order);
+                }
+                return ServerResponse.createBySuccessMessage("订单支付成功!");
+
+            case FAILED:
+                log.error("查询返回该订单支付失败或被关闭!!!");
+                if (order.getStatus() != Const.OrderStatusEnum.ORDER_CLOSED.getCode()) {
+                    order.setStatus(Const.OrderStatusEnum.ORDER_CLOSED.getCode());
+                    orderMapper.updateByPrimaryKeySelective(order);
+                }
+                return ServerResponse.createByErrorMessage("订单支付失败或被关闭!!!");
+
+            case UNKNOWN:
+                log.error("系统异常，订单支付状态未知!!!");
+                return ServerResponse.createByErrorMessage("系统异常，订单支付状态未知!!!");
+
+            default:
+                log.error("不支持的交易状态，交易返回异常!!!");
+                return ServerResponse.createByErrorMessage("不支持的交易状态，交易返回异常!!!");
+
         }
-        return ServerResponse.createByError();
+
+//        if (order.getStatus() >= Const.OrderStatusEnum.PAID.getCode()) {
+//            return ServerResponse.createBySuccess();
+//        }
+//        return ServerResponse.createByError();
     }
 
 
