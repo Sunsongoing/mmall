@@ -702,16 +702,25 @@ public class OrderServiceImpl implements OrderService {
     /**
      * 查询订单支付状态
      *
-     * @param userId
-     * @param orderNo
-     * @return
+     * @param userId  用户ID
+     * @param orderNo 订单号(必填) 商户订单号，通过此商户订单号查询当面付的交易状态
+     * @return 订单的状态
      */
     @Override
-    public ServerResponse queryOrderPayStatus(Integer userId, Long orderNo) {
+    public ServerResponse<String> queryOrderPayStatus(Integer userId, Long orderNo) {
         Order order = orderMapper.selectByOrderNo(orderNo);
         if (null == order) {
             return ServerResponse.createByErrorMessage("订单不存在");
         }
+        // 三小时后未支付订单自动过期
+        if (DateTimeUtil.compareDate(order.getCreateTime(), new Date()) >= 3) {
+            if(order.getStatus() != Const.OrderStatusEnum.ORDER_CLOSED.getCode()){
+                order.setStatus(Const.OrderStatusEnum.ORDER_CLOSED.getCode());
+                orderMapper.updateByPrimaryKeySelective(order);
+            }
+            return ServerResponse.createBySuccessMessage("超过时间未支付，订单自动关闭");
+        }
+
         if (order.getStatus() >= Const.OrderStatusEnum.PAID.getCode()) {
             return ServerResponse.createBySuccess();
         }

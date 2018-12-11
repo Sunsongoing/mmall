@@ -120,8 +120,8 @@ public class OrderController {
         ServerResponse serverResponse = orderService.queryOrderPayStatus(user.getId(), orderNo);
         //返回订单支付状态
         if (serverResponse.isSuccess()) {
-            return ServerResponse.createBySuccess(true);
+            return ServerResponse.createBySuccess(serverResponse.getMsg(),true);
         }
-        return ServerResponse.createBySuccess(false);
+        return ServerResponse.createBySuccess(serverResponse.getMsg(),false);
     }
 }
