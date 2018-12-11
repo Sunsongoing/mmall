@@ -5,6 +5,7 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -54,5 +55,22 @@ public class DateTimeUtil {
 
     public static String date2Str(Date date) {
         return date2Str(date, STANDARD_FORMAT);
+    }
+
+    /**
+     * 比较两个日期
+     *
+     * @param start
+     * @param end
+     * @return 两个日期的间隔(小时)
+     */
+    public static int compareDate(Date start, Date end) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(start);
+        long time1 = calendar.getTimeInMillis();
+        calendar.setTime(end);
+        long time2 = calendar.getTimeInMillis();
+        Long result = (time2 - time1) / (1000 * 3600);
+        return result.intValue();
     }
 }
