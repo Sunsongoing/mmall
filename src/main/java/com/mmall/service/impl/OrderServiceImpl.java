@@ -718,7 +718,7 @@ public class OrderServiceImpl implements OrderService {
                 order.setStatus(Const.OrderStatusEnum.ORDER_CLOSED.getCode());
                 orderMapper.updateByPrimaryKeySelective(order);
             }
-            return ServerResponse.createBySuccessMessage("超过时间未支付，订单自动关闭");
+            return ServerResponse.createByErrorMessage("超过时间未支付，订单自动关闭");
         }
 
         if (order.getStatus() >= Const.OrderStatusEnum.PAID.getCode()) {
