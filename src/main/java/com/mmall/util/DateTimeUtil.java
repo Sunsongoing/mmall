@@ -44,7 +44,7 @@ public class DateTimeUtil {
         if (null == date) {
             return StringUtils.EMPTY;
         }
-        DateTime dateTime = new DateTime();
+        DateTime dateTime = new DateTime(date);
         return dateTime.toString(formatStr);
     }
 
@@ -73,4 +73,5 @@ public class DateTimeUtil {
         Long result = (time2 - time1) / (1000 * 3600);
         return result.intValue();
     }
+
 }
